@@ -8,10 +8,10 @@ except ImportError:
     CUPY_AVAILABLE = False
     cp = np
 
-from models.trained_models.config import USE_GPU
-from models.trained_models.core.utils import to_gpu, to_cpu
-from models.trained_models.core.embedding import EmbeddingLayer
-from models.trained_models.core.transformer_block import TransformerBlock
+from config import USE_GPU
+from core.utils import to_gpu, to_cpu
+from core.embedding import EmbeddingLayer
+from core.transformer_block import TransformerBlock
 
 
 class Transformer:

@@ -8,7 +8,7 @@ except ImportError:
     CUPY_AVAILABLE = False
     cp = np
 
-from models.trained_models.core.utils import to_gpu, to_cpu
+from core.utils import to_gpu, to_cpu
 
 
 class SelfAttention:

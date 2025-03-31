@@ -6,7 +6,7 @@ except ImportError:
     CUPY_AVAILABLE = False
     cp = np
 
-from models.trained_models.config import USE_GPU
+from config import USE_GPU
 
 def to_gpu(array):
     if USE_GPU and CUPY_AVAILABLE:

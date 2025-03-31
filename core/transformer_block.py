@@ -8,10 +8,10 @@ except ImportError:
     CUPY_AVAILABLE = False
     cp = np
 
-from models.trained_models.config import USE_GPU
-from models.trained_models.core.utils import to_gpu, to_cpu
-from models.trained_models.core.attention import SelfAttention
-from models.trained_models.core.layers import LayerNorm, Dropout, FeedForward
+from config import USE_GPU
+from core.utils import to_gpu, to_cpu
+from core.attention import SelfAttention
+from core.layers import LayerNorm, Dropout, FeedForward
 
 
 class TransformerBlock:

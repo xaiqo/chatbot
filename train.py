@@ -39,6 +39,7 @@ def main():
         return
 
     # Read all processed text files
+    print(f"Reading files from {PROCESSED_DATA_DIR}...")
     text_data = " ".join(read_text_files(PROCESSED_DATA_DIR))
 
     if not text_data:
