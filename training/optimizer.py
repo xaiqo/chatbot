@@ -19,28 +19,36 @@ class AdamOptimizer:
         self.beta2 = beta2
         self.epsilon = epsilon
         self.weight_decay = weight_decay
-        self.m = {}
-        self.v = {}
-        self.t = 0
+        self.m = {}  # First moment
+        self.v = {}  # Second moment
+        self.t = 0  # Timestep
 
     def update(self, model):
         self.t += 1
+        lr_t = self.learning_rate * np.sqrt(1.0 - self.beta2 ** self.t) / (1.0 - self.beta1 ** self.t)
 
-        for param_name, param in model.parameters.items():
+        for param_name, param_dict in model.parameters.items():
+            # Initialize momentum and velocity if not present
             if param_name not in self.m:
-                self.m[param_name] = to_gpu(np.zeros_like(param))
-                self.v[param_name] = to_gpu(np.zeros_like(param))
+                self.m[param_name] = np.zeros_like(param_dict['value'])
+                self.v[param_name] = np.zeros_like(param_dict['value'])
 
-            grad = param.grad
+            # Get parameter and its gradient
+            param = param_dict['value']
+            grad = param_dict['grad']
+
+            # Add weight decay to gradient if specified
             if self.weight_decay > 0:
                 grad = grad + self.weight_decay * param
 
+            # Update biased first moment estimate
             self.m[param_name] = self.beta1 * self.m[param_name] + (1 - self.beta1) * grad
-            self.v[param_name] = self.beta2 * self.v[param_name] + (1 - self.beta2) * (grad ** 2)
 
-            m_hat = self.m[param_name] / (1 - self.beta1 ** self.t)
-            v_hat = self.v[param_name] / (1 - self.beta2 ** self.t)
+            # Update biased second raw moment estimate
+            self.v[param_name] = self.beta2 * self.v[param_name] + (1 - self.beta2) * (grad * grad)
 
-            param -= self.learning_rate * m_hat / (np.sqrt(v_hat) + self.epsilon)
+            # Update parameters
+            param_dict['value'] -= lr_t * self.m[param_name] / (np.sqrt(self.v[param_name]) + self.epsilon)
 
-            param.grad.fill(0)
+            # Reset gradients to zero
+            param_dict['grad'] = np.zeros_like(param_dict['value'])

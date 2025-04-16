@@ -16,23 +16,28 @@ spec:
     spec:
       containers:
       - name: xaiqo-chatbot
-        image: ${DOCKER_REGISTRY}/xaiqo-chatbot:${IMAGE_TAG}
-        resources:
-          limits:
-            cpu: "1"
-            memory: "2Gi"
-          requests:
-            cpu: "0.5"
-            memory: "1Gi"
-        env:
-        - name: USE_GPU
-          value: "False"
+        image: xaiqo-chatbot:latest
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8000
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "500m"
+          limits:
+            memory: "4Gi"
+            cpu: "2"
+        env:
+        - name: USE_GPU
+          value: "false"
+        - name: MODEL_PATH
+          value: "/app/models/final_model"
+        - name: MAX_SEQ_LENGTH
+          value: "512"
         volumeMounts:
         - name: model-storage
           mountPath: /app/models
       volumes:
       - name: model-storage
         persistentVolumeClaim:
-          claimName: model-storage-pvc
+          claimName: xaiqo-model-storage

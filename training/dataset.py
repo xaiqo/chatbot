@@ -12,16 +12,16 @@ class TextDataset:
 
     def _read_text_files(self, data_dir):
         """Czyta dane tekstowe z plików w katalogu"""
-        data_files = glob.glob(os.path.join(data_dir, "*_processed.txt"))
-        if not data_files:
-            raise FileNotFoundError(f"Nie znaleziono przetworzonych plików w {data_dir}")
-
-        text_data = []
-        for file_path in data_files:
+        print(f"Reading files from: {data_dir}")
+        files = os.listdir(data_dir)
+        print(f"Found files: {files}")
+        texts = []
+        for file in files:
+            file_path = os.path.join(data_dir, file)
+            print(f"Reading file: {file_path}")
             with open(file_path, 'r', encoding='utf-8') as f:
-                text_data.extend(f.readlines())
-
-        return text_data
+                texts.append(f.read())
+        return texts
 
     def _tokenize_texts(self):
         all_tokens = []

@@ -35,6 +35,6 @@ TOP_P = 0.9
 
 # Paths
 PDF_DIR = "../pdf_documents"
-PROCESSED_DATA_DIR = "data/processed_data"
+PROCESSED_DATA_DIR = "C:\\data\\processed_data"
 MODEL_SAVE_PATH = "trained_model.npy"
 TOKENIZER_SAVE_PATH = "tokenizer.json"
