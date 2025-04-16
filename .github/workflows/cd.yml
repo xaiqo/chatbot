@@ -25,7 +25,7 @@ jobs:
       id: meta
       uses: docker/metadata-action@v3
       with:
-        images: yourusername/xaiqo-chatbot
+        images: xaiqo/chatbot
         tags: |
           type=semver,pattern={{version}}
           type=ref,event=branch
@@ -44,4 +44,4 @@ jobs:
       uses: steebchen/kubectl@v2.0.0
       with:
         config: ${{ secrets.KUBE_CONFIG_DATA }}
-        command: set image deployment/xaiqo-chatbot xaiqo-chatbot=yourusername/xaiqo-chatbot:${{ steps.meta.outputs.version }}
+        command: set image deployment/chatbot xaiqo-chatbot=xaiqo/chatbot:${{ steps.meta.outputs.version }}
