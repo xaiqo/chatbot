@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: xaiqo-chatbot
+  labels:
+    app: xaiqo-chatbot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: xaiqo-chatbot
+  template:
+    metadata:
+      labels:
+        app: xaiqo-chatbot
+    spec:
+      containers:
+      - name: xaiqo-chatbot
+        image: ${DOCKER_REGISTRY}/xaiqo-chatbot:${IMAGE_TAG}
+        resources:
+          limits:
+            cpu: "1"
+            memory: "2Gi"
+          requests:
+            cpu: "0.5"
+            memory: "1Gi"
+        env:
+        - name: USE_GPU
+          value: "False"
+        ports:
+        - containerPort: 8000
+        volumeMounts:
+        - name: model-storage
+          mountPath: /app/models
+      volumes:
+      - name: model-storage
+        persistentVolumeClaim:
+          claimName: model-storage-pvc
